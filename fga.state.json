@@ -1,0 +1,21 @@
+{
+  "tuples": [
+    { "user": "user:anne", "relation": "owner", "object": "file:0001" },
+    { "user": "user:beth", "relation": "owner", "object": "file:0002" },
+    { "user": "user:beth", "relation": "viewer", "object": "file:0001" }
+  ],
+  "assertions": [
+    {
+      "user": "user:anne",
+      "relation": "can_read",
+      "object": "file:0001",
+      "shouldBe": true
+    },
+    {
+      "user": "user:anne",
+      "relation": "can_read",
+      "object": "file:0002",
+      "shouldBe": false
+    }
+  ]
+}
