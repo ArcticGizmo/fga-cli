@@ -16,6 +16,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@openfga/sdk": "^0.1.1",
     "@openfga/syntax-transformer": "^0.0.8",
     "cli-color": "^2.0.3",
     "commander": "^9.2.0"

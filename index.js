@@ -1,9 +1,20 @@
 import { Command } from "commander";
-import { list } from "./lib/list.js";
+import {
+  createStore,
+  deleteStoreById,
+  deleteStoreByName,
+  deleteAllStores,
+  listAllStores,
+} from "./lib/stores.js";
 import { loadConfig, loadModel, loadState } from "./lib/configuration.js";
 import { startInstance, stopInstance, logInstance } from "./lib/setup.js";
+import { initModel } from "./lib/model.js";
+import { FGA } from "./lib/fga.js";
 
 const c = loadConfig();
+
+FGA.configure(c);
+
 const m = loadModel();
 const s = loadState();
 
@@ -29,6 +40,41 @@ cli
   .description("Stream logs from instance")
   .action(logInstance);
 
-cli.command("list").description("List all available stores").action(list);
+const store = cli.command("store");
+
+store
+  .command("list")
+  .description("List all available stores")
+  .action(listAllStores);
+
+store
+  .command("create")
+  .description("Create a store with the given name")
+  .argument("<name>")
+  .action(createStore);
+
+store
+  .command("delete")
+  .description("Delete a store for a given name")
+  .argument("<name>")
+  .action(deleteStoreByName);
+
+store
+  .command("delete-id")
+  .description("Delete a store for a given id")
+  .argument("<id>")
+  .action(deleteStoreById);
+
+store
+  .command("delete-all")
+  .description("Delete all stores")
+  .action(deleteAllStores);
+
+const initer = cli.command("init");
+
+initer
+  .command("model")
+  .argument("[file]", "(optional) path to model file", "./fga.model.dsl")
+  .action(initModel);
 
 cli.parse();

@@ -1,6 +1,4 @@
 {
-    "scheme": "http",
-    "host": "localhost:8080",
-    "storeId": "{optional}",
-    "storeName": "{optional}"
+  "apiScheme": "http",
+  "apiHost": "localhost:8080"
 }
