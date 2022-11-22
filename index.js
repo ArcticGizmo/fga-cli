@@ -8,7 +8,7 @@ import {
 } from "./lib/stores.js";
 import { loadConfig, loadModel, loadState } from "./lib/configuration.js";
 import { startInstance, stopInstance, logInstance } from "./lib/setup.js";
-import { initModel } from "./lib/model.js";
+import { initModel, listModels } from "./lib/model.js";
 import { FGA } from "./lib/fga.js";
 
 const c = loadConfig();
@@ -70,11 +70,18 @@ store
   .description("Delete all stores")
   .action(deleteAllStores);
 
-const initer = cli.command("init");
+const model = cli.command("model");
 
-initer
-  .command("model")
+model
+  .command("create")
+  .argument("<store>", "name of store")
   .argument("[file]", "(optional) path to model file", "./fga.model.dsl")
   .action(initModel);
+
+model
+  .command("list")
+  .argument("<store>", "name of store")
+  .description("List all models time descending")
+  .action(listModels);
 
 cli.parse();
