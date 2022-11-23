@@ -1,0 +1,5 @@
+[
+  { "user": "user:anne", "relation": "owner", "object": "file:0001" },
+  { "user": "user:beth", "relation": "owner", "object": "file:0002" },
+  { "user": "user:beth", "relation": "viewer", "object": "file:0001" }
+]

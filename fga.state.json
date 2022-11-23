@@ -1,21 +1,34 @@
 {
-  "tuples": [
-    { "user": "user:anne", "relation": "owner", "object": "file:0001" },
-    { "user": "user:beth", "relation": "owner", "object": "file:0002" },
-    { "user": "user:beth", "relation": "viewer", "object": "file:0001" }
-  ],
-  "assertions": [
-    {
-      "user": "user:anne",
-      "relation": "can_read",
-      "object": "file:0001",
-      "shouldBe": true
-    },
-    {
-      "user": "user:anne",
-      "relation": "can_read",
-      "object": "file:0002",
-      "shouldBe": false
-    }
-  ]
+  "id": "01GJHPY1D6E6VGTEV0JHM5A0G3",
+  "name": "apple",
+  "authorization_model": {
+    "id": "01GJHPZX8EBE66BGV1FJ4K97B5",
+    "type_definitions": [
+      { "type": "user", "relations": {}, "metadata": null },
+      {
+        "type": "file",
+        "relations": {
+          "can_delete": {
+            "computedUserset": { "object": "", "relation": "owner" }
+          },
+          "can_edit": {
+            "computedUserset": { "object": "", "relation": "owner" }
+          },
+          "can_read": {
+            "union": {
+              "child": [
+                { "computedUserset": { "object": "", "relation": "owner" } },
+                { "computedUserset": { "object": "", "relation": "viewer" } }
+              ]
+            }
+          },
+          "owner": { "this": {} },
+          "viewer": { "this": {} }
+        },
+        "metadata": null
+      }
+    ]
+  },
+  "tuples": [{ "object": "file:0001", "relation": "owner", "user": "user:anne" }],
+  "assertions": []
 }
