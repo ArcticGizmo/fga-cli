@@ -1,17 +1,23 @@
 import { Command } from 'commander';
-import { readJson } from './configuration';
+import { argv } from 'process';
+import { createConfig, readJson } from './configuration';
 import { FGA } from './fga';
 import { listModels, setModel } from './model';
 import { startInstance, stopInstance } from './setup';
 import { createStore, deleteStoreById, deleteStoreByName, listAllStores } from './store';
 import { addTupleOrTuples, removeTupleOrTuples } from './tuples';
 
+if (argv[2] === 'init-config') {
+  createConfig();
+  process.exit();
+}
+
 const CONFIG_FILE = './fga.config.json';
 
 const config = readJson(CONFIG_FILE);
 
 if (!config) {
-  console.error(`Missing required config file '${CONFIG_FILE}'. Please create one`);
+  console.error(`Missing required config file '${CONFIG_FILE}'. Run 'fga-cli init-config' to generate one`);
   process.exit(1);
 }
 

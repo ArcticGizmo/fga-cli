@@ -1,16 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const commander_1 = require("commander");
+const process_1 = require("process");
 const configuration_1 = require("./configuration");
 const fga_1 = require("./fga");
 const model_1 = require("./model");
 const setup_1 = require("./setup");
 const store_1 = require("./store");
 const tuples_1 = require("./tuples");
+if (process_1.argv[2] === 'init-config') {
+    (0, configuration_1.createConfig)();
+    process.exit();
+}
 const CONFIG_FILE = './fga.config.json';
 const config = (0, configuration_1.readJson)(CONFIG_FILE);
 if (!config) {
-    console.error(`Missing required config file '${CONFIG_FILE}'. Please create one`);
+    console.error(`Missing required config file '${CONFIG_FILE}'. Run 'fga-cli init-config' to generate one`);
     process.exit(1);
 }
 fga_1.FGA.configure(config);
