@@ -2,11 +2,9 @@
   "name": "fga-cli-repl",
   "version": "1.0.0",
   "description": "A simple OpenFGA cli.REPL tool to make FGA more accessible",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "dev": "ts-node ./src/index.ts",
-    "build": "tsc --outDir dist/",
-    "prepublishOnly": "rimraf dist/ && npm run build",
     "test": "jest --config ./tests/jest.config.js",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix"
