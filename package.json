@@ -4,7 +4,7 @@
   "description": "A simple OpenFGA cli.REPL tool to make FGA more accessible",
   "main": "index.js",
   "scripts": {
-    "prepublishOnly": "tsc --outDir dist/",
+    "compile": "rimraf dist && tsc --outDir dist/",
     "dev": "ts-node ./src/index.ts",
     "test": "jest --config ./tests/jest.config.js",
     "lint": "eslint . --ext .ts",
