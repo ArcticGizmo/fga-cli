@@ -1,2 +1,0 @@
-- move towards a REPL model
-- make the cli commands simple (and always from files)
