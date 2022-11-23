@@ -1,5 +1,5 @@
 {
-  "name": "fga-cli-repl",
+  "name": "fga-cli",
   "version": "1.0.0",
   "description": "A simple OpenFGA cli.REPL tool to make FGA more accessible",
   "main": "lib/index.js",
