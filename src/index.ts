@@ -5,6 +5,7 @@ import { checkTuple } from './check';
 import { createConfig, readJson } from './configuration';
 import { FGA } from './fga';
 import { listModels, setModel } from './model';
+import { queryTuples } from './query';
 import { startInstance, stopInstance } from './setup';
 import { setState } from './state';
 import { createStore, deleteStoreById, deleteStoreByName, listAllStores } from './store';
@@ -119,7 +120,15 @@ cli
   .action(checkTuple);
 
 // ==== query ====
-const query = cli.command('query');
+cli
+  .command('query')
+  .option('-s, --store <store>', '[required]')
+  .option('-u, --user <user>')
+  .option('-r, --relation <relation>')
+  .option('-o, --object <object>', '[required]')
+  .option('-p, --page-size <count>', 'Max entries per response', '50')
+  .option('-t, --token', 'continuation token')
+  .action(queryTuples);
 
 // ==== state ====
 cli

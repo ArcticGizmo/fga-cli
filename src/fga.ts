@@ -13,6 +13,11 @@ interface ConfigurationOptions extends UserConfigurationParams {
   storeName?: string;
 }
 
+interface QueryOpts {
+  pageSize?: number;
+  token?: string;
+}
+
 class FGAClient {
   private _fga!: OpenFgaApi;
   private _storeName?: string;
@@ -220,6 +225,14 @@ class FGAClient {
 
     const resp = await this._fga.check(body);
     return resp.allowed;
+  }
+
+  async query(tuple: TupleKey, opts?: QueryOpts) {
+    return await this._fga.read({
+      tuple_key: tuple,
+      page_size: opts?.pageSize,
+      continuation_token: opts?.token
+    });
   }
 }
 
