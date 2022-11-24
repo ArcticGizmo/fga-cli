@@ -75,6 +75,8 @@ tuples
     .option('-f, --file <file>')
     .action(tuples_1.removeTupleOrTuples);
 // ==== Assertions ===
+// TODO: add assertions
+// ==== check ====
 const collectTuples = (value, acc = []) => {
     const [user, relation, object] = value.split(' ');
     if (!user || !relation || !object) {
@@ -83,7 +85,6 @@ const collectTuples = (value, acc = []) => {
     acc.push({ user, relation, object });
     return acc;
 };
-// ==== check ====
 cli
     .command('check')
     .argument('<user>')

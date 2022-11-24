@@ -95,7 +95,9 @@ tuples
   .action(removeTupleOrTuples);
 
 // ==== Assertions ===
+// TODO: add assertions
 
+// ==== check ====
 const collectTuples = (value: string, acc: TupleKey[] = []) => {
   const [user, relation, object] = value.split(' ');
   if (!user || !relation || !object) {
@@ -105,7 +107,6 @@ const collectTuples = (value: string, acc: TupleKey[] = []) => {
   return acc;
 };
 
-// ==== check ====
 cli
   .command('check')
   .argument('<user>')
