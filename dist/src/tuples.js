@@ -9,16 +9,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeTupleOrTuples = exports.addTupleOrTuples = void 0;
+exports.removeTupleOrTuples = exports.addTuples = exports.addTupleOrTuples = void 0;
 const configuration_1 = require("./configuration");
 const fga_1 = require("./fga");
-function addTupleOrTuples(storeName, user, relation, object, flags) {
+const helper_1 = require("./helper");
+function addTupleOrTuples(storeName, flags) {
     return __awaiter(this, void 0, void 0, function* () {
         yield fga_1.FGA.setStoreByName(storeName);
         if (flags.file) {
             yield addTuplesFromFile(flags.file);
         }
         else {
+            const { user, relation, object } = flags;
+            if (!user || !relation || !object) {
+                throw 'User, relation and object required!';
+            }
             yield addTuple(user, relation, object);
         }
     });
@@ -36,8 +41,13 @@ function addTuplesFromFile(path) {
         if (!data) {
             throw `No tuples found in file '${path}'`;
         }
+        yield addTuples(data);
+    });
+}
+function addTuples(tuples) {
+    return __awaiter(this, void 0, void 0, function* () {
         // insert in steps
-        const chunks = chunkEvery(data, 5);
+        const chunks = (0, helper_1.chunkEvery)(tuples, 5);
         for (const chunk of chunks) {
             yield fga_1.FGA.writeTuples(chunk);
             chunk.forEach(c => {
@@ -46,13 +56,18 @@ function addTuplesFromFile(path) {
         }
     });
 }
-function removeTupleOrTuples(storeName, user, relation, object, flags) {
+exports.addTuples = addTuples;
+function removeTupleOrTuples(storeName, flags) {
     return __awaiter(this, void 0, void 0, function* () {
         yield fga_1.FGA.setStoreByName(storeName);
         if (flags.file) {
             yield removeTuplesFromFile(flags.file);
         }
         else {
+            const { user, relation, object } = flags;
+            if (!user || !relation || !object) {
+                throw 'User, relation and object required!';
+            }
             yield removeTuple(user, relation, object);
         }
     });
@@ -71,7 +86,7 @@ function removeTuplesFromFile(path) {
             throw `No tuples found in file '${path}'`;
         }
         // insert in steps
-        const chunks = chunkEvery(data, 5);
+        const chunks = (0, helper_1.chunkEvery)(data, 5);
         for (const chunk of chunks) {
             yield fga_1.FGA.writeTuples(undefined, chunk);
             chunk.forEach(c => {
@@ -79,22 +94,4 @@ function removeTuplesFromFile(path) {
             });
         }
     });
-}
-function chunkEvery(arr, count, step, leftover) {
-    if (!arr.length) {
-        return [];
-    }
-    step = step || count;
-    const retArr = [];
-    for (let i = 0; i < arr.length; i += step) {
-        retArr.push(arr.slice(i, i + count));
-    }
-    const lastIndex = retArr.length - 1;
-    if (leftover === 'discard' && retArr[lastIndex].length < count) {
-        return retArr.slice(0, lastIndex);
-    }
-    if (Array.isArray(leftover) && (leftover === null || leftover === void 0 ? void 0 : leftover.length)) {
-        retArr[lastIndex] = retArr[lastIndex].concat(leftover).slice(0, count);
-    }
-    return retArr;
 }

@@ -41,9 +41,9 @@ function awaitUserTermination() {
         });
     });
 }
-function startInstance() {
+function startInstance(opts) {
     return __awaiter(this, void 0, void 0, function* () {
-        const ports = '-p 8080:8080 -p 8081:8081 -p 3000:3000';
+        const ports = `-p 8080:${opts.http} -p 8081:${opts.grpc} -p 3000:${opts.playground}`;
         const startCmd = `docker run --rm --name ${NAME} ${ports} openfga/openfga run`;
         const runner = (0, cmd_1.liveCmd)(startCmd, { show: true });
         // exit if naturally terminated

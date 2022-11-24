@@ -91,6 +91,12 @@ class FGAClient {
             return yield this._fga.createStore({ name });
         });
     }
+    storeExistsByName(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const stores = yield this.listAllStores();
+            return stores.find(s => s.name === name);
+        });
+    }
     deleteStoreByName(name) {
         return __awaiter(this, void 0, void 0, function* () {
             const nameResp = yield this.getStoreByName(name);
@@ -194,6 +200,31 @@ class FGAClient {
     deleteTuple(user, relation, object) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.writeTuples(undefined, [{ user, relation, object }]);
+        });
+    }
+    check(user, relation, object, contextTuples) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const body = {
+                tuple_key: {
+                    user,
+                    relation,
+                    object
+                }
+            };
+            if (contextTuples) {
+                body.contextual_tuples = { tuple_keys: contextTuples };
+            }
+            const resp = yield this._fga.check(body);
+            return resp.allowed;
+        });
+    }
+    query(tuple, opts) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this._fga.read({
+                tuple_key: tuple,
+                page_size: opts === null || opts === void 0 ? void 0 : opts.pageSize,
+                continuation_token: opts === null || opts === void 0 ? void 0 : opts.token
+            });
         });
     }
 }

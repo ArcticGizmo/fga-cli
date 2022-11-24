@@ -3,6 +3,10 @@ import type { Store } from '@openfga/sdk';
 interface ConfigurationOptions extends UserConfigurationParams {
     storeName?: string;
 }
+interface QueryOpts {
+    pageSize?: number;
+    token?: string;
+}
 declare class FGAClient {
     private _fga;
     private _storeName?;
@@ -14,6 +18,7 @@ declare class FGAClient {
     setStoreByName(name: string): Promise<void>;
     setStoreById(id: string): Promise<void>;
     createStore(name: string): Promise<import("@openfga/sdk/dist/common").CallResult<import("@openfga/sdk").CreateStoreResponse>>;
+    storeExistsByName(name: string): Promise<Store | undefined>;
     deleteStoreByName(name: string): Promise<void>;
     deleteStoreById(id: string): Promise<void>;
     deleteAllStores(): Promise<Store[]>;
@@ -27,6 +32,8 @@ declare class FGAClient {
     writeTuples(writes?: Array<TupleKey>, deletes?: Array<TupleKey>): Promise<void>;
     addTuple(user: string, relation: string, object: string): Promise<void>;
     deleteTuple(user: string, relation: string, object: string): Promise<void>;
+    check(user: string, relation: string, object: string, contextTuples?: TupleKey[]): Promise<boolean | undefined>;
+    query(tuple: TupleKey, opts?: QueryOpts): Promise<import("@openfga/sdk/dist/common").CallResult<import("@openfga/sdk").ReadResponse>>;
 }
 export declare const FGA: FGAClient;
 export {};

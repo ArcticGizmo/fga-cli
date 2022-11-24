@@ -13,21 +13,30 @@ exports.listModels = exports.setModel = void 0;
 const fga_1 = require("./fga");
 const syntax_transformer_1 = require("@openfga/syntax-transformer");
 const configuration_1 = require("./configuration");
-function setModel(storeName, path) {
+function setModel(opts) {
     return __awaiter(this, void 0, void 0, function* () {
-        const model = (0, configuration_1.readModel)(path);
-        if (!model) {
-            throw `No model found within '${path}'`;
+        if (!opts.store || !opts.model) {
+            console.error('store and model required');
+            process.exit(1);
         }
-        yield fga_1.FGA.setStoreByName(storeName);
+        const model = (0, configuration_1.readModel)(opts.model);
+        if (!model) {
+            console.error(`No model found within '${opts.model}'`);
+            process.exit(1);
+        }
+        yield fga_1.FGA.setStoreByName(opts.store);
         const resp = yield fga_1.FGA.createModel(model);
         console.log(`Model created - '${resp.authorization_model_id}'`);
     });
 }
 exports.setModel = setModel;
-function listModels(storeName) {
+function listModels(opts) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield fga_1.FGA.setStoreByName(storeName);
+        if (!opts.store) {
+            console.error('-s, --store required');
+            process.exit(1);
+        }
+        yield fga_1.FGA.setStoreByName(opts.store);
         const models = yield fga_1.FGA.listModels();
         if (models.length === 0) {
             console.log('No models found!');
