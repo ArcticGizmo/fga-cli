@@ -1,5 +1,11 @@
 import { cmd, liveCmd } from './cmd';
 
+interface StartOptions {
+  http: string;
+  grpc: string;
+  playground: string;
+}
+
 const NAME = 'fga-transient';
 
 async function awaitUserTermination() {
@@ -35,15 +41,15 @@ async function awaitUserTermination() {
   });
 }
 
-export async function startInstance() {
-  const ports = '-p 8080:8080 -p 8081:8081 -p 3000:3000';
+export async function startInstance(opts: StartOptions) {
+  const ports = `-p 8080:${opts.http} -p 8081:${opts.grpc} -p 3000:${opts.playground}`;
   const startCmd = `docker run --rm --name ${NAME} ${ports} openfga/openfga run`;
 
   const runner = liveCmd(startCmd, { show: true });
 
   // exit if naturally terminated
   runner.resp
-    .then((code: any) => {
+    .then((code: unknown) => {
       process.exit(code as number);
     })
     .catch(() => {

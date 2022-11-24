@@ -18,13 +18,13 @@ export function readFile(path: string) {
   }
 }
 
-export function readJson(path: string) {
+export function readJson<T = any>(path: string) {
   const data = readFile(path);
   if (!data) {
     return;
   }
 
-  return JSON.parse(data);
+  return JSON.parse(data) as T;
 }
 
 export function readModel(path: string) {

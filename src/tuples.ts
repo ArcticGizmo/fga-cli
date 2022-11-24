@@ -1,23 +1,27 @@
 import { TupleKey } from '@openfga/sdk';
 import { readJson } from './configuration';
 import { FGA } from './fga';
+import { chunkEvery } from './helper';
 
 interface OptionalFlags {
   file?: string;
+  user?: string;
+  relation?: string;
+  object?: string;
 }
 
-export async function addTupleOrTuples(
-  storeName: string,
-  user: string,
-  relation: string,
-  object: string,
-  flags: OptionalFlags
-) {
+export async function addTupleOrTuples(storeName: string, flags: OptionalFlags) {
   await FGA.setStoreByName(storeName);
 
   if (flags.file) {
     await addTuplesFromFile(flags.file);
   } else {
+    const { user, relation, object } = flags;
+
+    if (!user || !relation || !object) {
+      throw 'User, relation and object required!';
+    }
+
     await addTuple(user, relation, object);
   }
 }
@@ -34,8 +38,12 @@ async function addTuplesFromFile(path: string) {
     throw `No tuples found in file '${path}'`;
   }
 
+  await addTuples(data as TupleKey[]);
+}
+
+export async function addTuples(tuples: TupleKey[]) {
   // insert in steps
-  const chunks = chunkEvery(data as Array<TupleKey>, 5);
+  const chunks = chunkEvery(tuples, 5);
 
   for (const chunk of chunks) {
     await FGA.writeTuples(chunk);
@@ -45,18 +53,17 @@ async function addTuplesFromFile(path: string) {
   }
 }
 
-export async function removeTupleOrTuples(
-  storeName: string,
-  user: string,
-  relation: string,
-  object: string,
-  flags: OptionalFlags
-) {
+export async function removeTupleOrTuples(storeName: string, flags: OptionalFlags) {
   await FGA.setStoreByName(storeName);
 
   if (flags.file) {
     await removeTuplesFromFile(flags.file);
   } else {
+    const { user, relation, object } = flags;
+
+    if (!user || !relation || !object) {
+      throw 'User, relation and object required!';
+    }
     await removeTuple(user, relation, object);
   }
 }
@@ -82,34 +89,4 @@ async function removeTuplesFromFile(path: string) {
       console.log(`Removed - user: ${c.user} | relation: ${c.relation} | object: ${c.object}`);
     });
   }
-}
-
-function chunkEvery<T = any>(
-  arr: T[],
-  count: number,
-  step?: number | undefined,
-  leftover?: T[] | string
-): Array<Array<T>> {
-  if (!arr.length) {
-    return [];
-  }
-
-  step = step || count;
-
-  const retArr = [];
-  for (let i = 0; i < arr.length; i += step) {
-    retArr.push(arr.slice(i, i + count));
-  }
-
-  const lastIndex = retArr.length - 1;
-
-  if (leftover === 'discard' && retArr[lastIndex].length < count) {
-    return retArr.slice(0, lastIndex);
-  }
-
-  if (Array.isArray(leftover) && leftover?.length) {
-    retArr[lastIndex] = retArr[lastIndex].concat(leftover).slice(0, count);
-  }
-
-  return retArr;
 }

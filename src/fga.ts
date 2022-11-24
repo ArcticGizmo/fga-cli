@@ -1,8 +1,8 @@
 import {
   AuthorizationModel,
+  CheckRequest,
   OpenFgaApi,
   TupleKey,
-  TupleKeys,
   UserConfigurationParams,
   WriteAuthorizationModelRequest,
   WriteRequest
@@ -88,6 +88,11 @@ class FGAClient {
     }
 
     return await this._fga.createStore({ name });
+  }
+
+  async storeExistsByName(name: string) {
+    const stores = await this.listAllStores();
+    return stores.find(s => s.name === name);
   }
 
   async deleteStoreByName(name: string) {
@@ -198,6 +203,23 @@ class FGAClient {
 
   async deleteTuple(user: string, relation: string, object: string) {
     return await this.writeTuples(undefined, [{ user, relation, object }]);
+  }
+
+  async check(user: string, relation: string, object: string, contextTuples?: TupleKey[]) {
+    const body: CheckRequest = {
+      tuple_key: {
+        user,
+        relation,
+        object
+      }
+    };
+
+    if (contextTuples) {
+      body.contextual_tuples = { tuple_keys: contextTuples };
+    }
+
+    const resp = await this._fga.check(body);
+    return resp.allowed;
   }
 }
 
