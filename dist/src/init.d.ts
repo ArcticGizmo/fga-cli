@@ -1,6 +1,14 @@
+interface Credential {
+    method: 'api_token';
+    config: {
+        token: string;
+    };
+}
 interface CreateOptions {
     apiScheme: string;
     apiHost: string;
+    presharedKey?: string;
+    credentials?: Credential;
 }
 export declare function createConfig(opts: CreateOptions): void;
 export declare function createModel(): void;

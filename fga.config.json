@@ -1,4 +1,10 @@
 {
   "apiScheme": "http",
-  "apiHost": "localhost:8080"
+  "apiHost": "localhost:8080",
+  "credentials": {
+    "method": "api_token",
+    "config": {
+      "token": "password2"
+    }
+  }
 }

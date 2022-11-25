@@ -1,4 +1,15 @@
 "use strict";
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createAll = exports.createState = exports.createTuples = exports.createModel = exports.createConfig = void 0;
 const syntax_transformer_1 = require("@openfga/syntax-transformer");
@@ -19,7 +30,16 @@ const DEFAULT_TUPLES = [
 ];
 function createConfig(opts) {
     const path = './fga.config.json';
-    fs.writeFileSync(path, JSON.stringify(opts, null, 2));
+    const { presharedKey } = opts, body = __rest(opts, ["presharedKey"]);
+    if (presharedKey) {
+        body.credentials = {
+            method: 'api_token',
+            config: {
+                token: presharedKey
+            }
+        };
+    }
+    fs.writeFileSync(path, JSON.stringify(body, null, 2));
     console.log(`- Config created at '${path}'`);
 }
 exports.createConfig = createConfig;

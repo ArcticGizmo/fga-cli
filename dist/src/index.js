@@ -30,6 +30,7 @@ init
     .command('config')
     .option('--api-scheme <scheme>', 'http/https', 'http')
     .option('--api-host <host>', undefined, 'localhost:8080')
+    .option('--preshared-key <key>')
     .action(init_1.createConfig);
 init.command('model').action(init_1.createModel);
 init.command('tuples').action(init_1.createTuples);
@@ -38,8 +39,13 @@ init
     .command('all')
     .option('--api-scheme <scheme>', 'http/https', 'http')
     .option('--api-host <host>', undefined, 'localhost:8080')
+    .option('--preshared-key <key>')
     .action(init_1.createAll);
 // setup
+const collect = (value, acc = []) => {
+    acc.push(value);
+    return acc;
+};
 cli
     .command('start')
     .description('Start a local OpenFGA docker instance')
@@ -47,6 +53,8 @@ cli
     .option('-g, --grpc [port]', 'grpc port', '8081')
     .option('-p, --playground [port]', 'playground port', '3000')
     .option('-d, --detach', 'Run the docker instance in the background')
+    .option('--no-playground', 'Disabled playground')
+    .option('--preshared-keys <key1,key2,..>', 'Preshared keys for authentication', collect)
     .action(setup_1.startInstance);
 cli.command('stop').description('Stop local OpenFGA docker instance').action(setup_1.stopInstance);
 // ==== store ====

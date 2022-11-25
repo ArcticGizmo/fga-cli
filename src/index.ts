@@ -35,6 +35,7 @@ init
   .command('config')
   .option('--api-scheme <scheme>', 'http/https', 'http')
   .option('--api-host <host>', undefined, 'localhost:8080')
+  .option('--preshared-key <key>')
   .action(createConfig);
 
 init.command('model').action(createModel);
@@ -47,9 +48,15 @@ init
   .command('all')
   .option('--api-scheme <scheme>', 'http/https', 'http')
   .option('--api-host <host>', undefined, 'localhost:8080')
+  .option('--preshared-key <key>')
   .action(createAll);
 
 // setup
+const collect = (value: string, acc: string[] = []) => {
+  acc.push(value);
+  return acc;
+};
+
 cli
   .command('start')
   .description('Start a local OpenFGA docker instance')
@@ -57,6 +64,8 @@ cli
   .option('-g, --grpc [port]', 'grpc port', '8081')
   .option('-p, --playground [port]', 'playground port', '3000')
   .option('-d, --detach', 'Run the docker instance in the background')
+  .option('--no-playground', 'Disabled playground')
+  .option('--preshared-keys <key1,key2,..>', 'Preshared keys for authentication', collect)
   .action(startInstance);
 
 cli.command('stop').description('Stop local OpenFGA docker instance').action(stopInstance);

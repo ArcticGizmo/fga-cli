@@ -43,9 +43,18 @@ function awaitUserTermination() {
 }
 function startInstance(opts) {
     return __awaiter(this, void 0, void 0, function* () {
+        const keys = opts.presharedKeys || [];
         const ports = `-p 8080:${opts.http} -p 8081:${opts.grpc} -p 3000:${opts.playground}`;
         const detach = opts.detach ? ' -d' : '';
-        const startCmd = `docker run --rm${detach} --name ${NAME} ${ports} openfga/openfga run`;
+        let args = '';
+        console.dir(keys);
+        if (keys.length) {
+            args += ` --authn-method preshared --authn-preshared-keys ${keys.join(' ')}`;
+        }
+        if (opts.noPlayground) {
+            args += ' --playground-enabled false';
+        }
+        const startCmd = `docker run --rm${detach} --name ${NAME} ${ports} openfga/openfga run${args}`;
         const runner = (0, cmd_1.liveCmd)(startCmd, { show: true });
         // exit if naturally terminated
         runner.resp

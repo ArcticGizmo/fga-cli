@@ -1,9 +1,18 @@
 import { friendlySyntaxToApiSyntax } from '@openfga/syntax-transformer';
 import * as fs from 'fs';
 
+interface Credential {
+  method: 'api_token';
+  config: {
+    token: string;
+  };
+}
+
 interface CreateOptions {
   apiScheme: string;
   apiHost: string;
+  presharedKey?: string;
+  credentials?: Credential;
 }
 
 const DEFAULT_MODEL = `
@@ -24,7 +33,17 @@ const DEFAULT_TUPLES = [
 
 export function createConfig(opts: CreateOptions) {
   const path = './fga.config.json';
-  fs.writeFileSync(path, JSON.stringify(opts, null, 2));
+  const { presharedKey, ...body } = opts;
+  if (presharedKey) {
+    body.credentials = {
+      method: 'api_token',
+      config: {
+        token: presharedKey
+      }
+    };
+  }
+
+  fs.writeFileSync(path, JSON.stringify(body, null, 2));
   console.log(`- Config created at '${path}'`);
 }
 

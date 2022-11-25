@@ -5,6 +5,8 @@ interface StartOptions {
   grpc: string;
   playground: string;
   detach?: boolean;
+  noPlayground?: boolean;
+  presharedKeys?: string[];
 }
 
 const NAME = 'fga-transient';
@@ -43,9 +45,21 @@ async function awaitUserTermination() {
 }
 
 export async function startInstance(opts: StartOptions) {
+  const keys = opts.presharedKeys || [];
+
   const ports = `-p 8080:${opts.http} -p 8081:${opts.grpc} -p 3000:${opts.playground}`;
   const detach = opts.detach ? ' -d' : '';
-  const startCmd = `docker run --rm${detach} --name ${NAME} ${ports} openfga/openfga run`;
+  let args = '';
+
+  console.dir(keys);
+  if (keys.length) {
+    args += ` --authn-method preshared --authn-preshared-keys ${keys.join(' ')}`;
+  }
+
+  if (opts.noPlayground) {
+    args += ' --playground-enabled false';
+  }
+  const startCmd = `docker run --rm${detach} --name ${NAME} ${ports} openfga/openfga run${args}`;
 
   const runner = liveCmd(startCmd, { show: true });
 
