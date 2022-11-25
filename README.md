@@ -11,7 +11,7 @@ npm install -g ArcticGizmo/fga-cli
 ```
 fga-cli init all && fga-cli start -d && fga-cli state set fga.state.json
 ```
-and then to stop your instance
+open the playground dashboard from http://localhost:3000/playground. When you are done, you can stop your instance via
 ```
 fga-cli stop
 ```
