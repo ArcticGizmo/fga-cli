@@ -4,14 +4,15 @@ import { FGA } from './fga';
 import { chunkEvery } from './helper';
 
 interface OptionalFlags {
+  storeName: string;
   file?: string;
   user?: string;
   relation?: string;
   object?: string;
 }
 
-export async function addTupleOrTuples(storeName: string, flags: OptionalFlags) {
-  await FGA.setStoreByName(storeName);
+export async function addTupleOrTuples(flags: OptionalFlags) {
+  await FGA.setStoreByName(flags.storeName);
 
   if (flags.file) {
     await addTuplesFromFile(flags.file);
@@ -53,8 +54,8 @@ export async function addTuples(tuples: TupleKey[]) {
   }
 }
 
-export async function removeTupleOrTuples(storeName: string, flags: OptionalFlags) {
-  await FGA.setStoreByName(storeName);
+export async function removeTupleOrTuples(flags: OptionalFlags) {
+  await FGA.setStoreByName(flags.storeName);
 
   if (flags.file) {
     await removeTuplesFromFile(flags.file);

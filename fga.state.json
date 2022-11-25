@@ -1,34 +1,71 @@
 {
-  "id": "01GJHPY1D6E6VGTEV0JHM5A0G3",
-  "name": "apple",
+  "name": "example-store",
   "authorization_model": {
-    "id": "01GJHPZX8EBE66BGV1FJ4K97B5",
     "type_definitions": [
-      { "type": "user", "relations": {}, "metadata": null },
+      {
+        "type": "user",
+        "relations": {}
+      },
       {
         "type": "file",
         "relations": {
-          "can_delete": {
-            "computedUserset": { "object": "", "relation": "owner" }
-          },
-          "can_edit": {
-            "computedUserset": { "object": "", "relation": "owner" }
-          },
           "can_read": {
             "union": {
               "child": [
-                { "computedUserset": { "object": "", "relation": "owner" } },
-                { "computedUserset": { "object": "", "relation": "viewer" } }
+                {
+                  "computedUserset": {
+                    "object": "",
+                    "relation": "owner"
+                  }
+                },
+                {
+                  "computedUserset": {
+                    "object": "",
+                    "relation": "viewer"
+                  }
+                }
               ]
             }
           },
-          "owner": { "this": {} },
-          "viewer": { "this": {} }
-        },
-        "metadata": null
+          "can_edit": {
+            "computedUserset": {
+              "object": "",
+              "relation": "owner"
+            }
+          },
+          "can_delete": {
+            "computedUserset": {
+              "object": "",
+              "relation": "owner"
+            }
+          },
+          "owner": {
+            "this": {}
+          },
+          "viewer": {
+            "this": {}
+          }
+        }
       }
-    ]
+    ],
+    "schema_version": "1.0"
   },
-  "tuples": [{ "object": "file:0001", "relation": "owner", "user": "user:anne" }],
+  "tuples": [
+    {
+      "user": "user:anne",
+      "relation": "owner",
+      "object": "file:0001"
+    },
+    {
+      "user": "user:beth",
+      "relation": "owner",
+      "object": "file:0002"
+    },
+    {
+      "user": "user:beth",
+      "relation": "viewer",
+      "object": "file:0001"
+    }
+  ],
   "assertions": []
 }

@@ -4,6 +4,7 @@ interface StartOptions {
   http: string;
   grpc: string;
   playground: string;
+  detach?: boolean;
 }
 
 const NAME = 'fga-transient';
@@ -18,7 +19,7 @@ async function awaitUserTermination() {
 
       // this allows everything to be flushed out before terminating
       if (hasKilled) {
-        console.log('  done');
+        console.log('done');
         resolve(undefined);
         return;
       }
@@ -34,7 +35,7 @@ async function awaitUserTermination() {
 
       isKilling = true;
 
-      process.stdout.write('terminating ...');
+      console.log('terminating ...');
       cmd(`docker stop ${NAME}`);
       hasKilled = true;
     });
@@ -43,7 +44,8 @@ async function awaitUserTermination() {
 
 export async function startInstance(opts: StartOptions) {
   const ports = `-p 8080:${opts.http} -p 8081:${opts.grpc} -p 3000:${opts.playground}`;
-  const startCmd = `docker run --rm --name ${NAME} ${ports} openfga/openfga run`;
+  const detach = opts.detach ? ' -d' : '';
+  const startCmd = `docker run --rm${detach} --name ${NAME} ${ports} openfga/openfga run`;
 
   const runner = liveCmd(startCmd, { show: true });
 
