@@ -59,8 +59,8 @@ fga-cli init all {same options as above}
 ```
 fga-cli store create {store}   // create a new store
 fga-cli store delete {store}   // delete store by name
-fga-cli store delete-id {id}  // delete store by id
-fga-cli store list            // list all available stores
+fga-cli store delete-id {id}   // delete store by id
+fga-cli store list             // list all available stores
 ```
 
 ### Model
@@ -112,7 +112,7 @@ NB: the quotes are important for contextual tuples
 
 
 ### Query
-When making a query, the only required options are the <store> and <object> flags. Eg.
+When making a query, the only required options are the `store` and `object` flags. Eg.
 ```
 fga-cli query --store {store} -o {object} -u {user}
 ```
