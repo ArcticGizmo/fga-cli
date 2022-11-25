@@ -33,7 +33,7 @@ const init = cli.command('init');
 
 init
   .command('config')
-  .option('--api-schema <scheme>', 'http/https', 'http')
+  .option('--api-scheme <scheme>', 'http/https', 'http')
   .option('--api-host <host>', undefined, 'localhost:8080')
   .action(createConfig);
 
@@ -45,7 +45,7 @@ init.command('state').action(createState);
 
 init
   .command('all')
-  .option('--api-schema <schema>', 'http/https', 'http')
+  .option('--api-scheme <scheme>', 'http/https', 'http')
   .option('--api-host <host>', undefined, 'localhost:8080')
   .action(createAll);
 

@@ -2,7 +2,7 @@ import { friendlySyntaxToApiSyntax } from '@openfga/syntax-transformer';
 import * as fs from 'fs';
 
 interface CreateOptions {
-  apiSchema: string;
+  apiScheme: string;
   apiHost: string;
 }
 

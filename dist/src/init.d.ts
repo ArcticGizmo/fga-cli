@@ -1,5 +1,5 @@
 interface CreateOptions {
-    apiSchema: string;
+    apiScheme: string;
     apiHost: string;
 }
 export declare function createConfig(opts: CreateOptions): void;

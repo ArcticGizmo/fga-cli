@@ -1,4 +1,4 @@
 {
-  "apiSchema": "http",
+  "apiScheme": "http",
   "apiHost": "localhost:8080"
 }

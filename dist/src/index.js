@@ -28,7 +28,7 @@ cli
 const init = cli.command('init');
 init
     .command('config')
-    .option('--api-schema <scheme>', 'http/https', 'http')
+    .option('--api-scheme <scheme>', 'http/https', 'http')
     .option('--api-host <host>', undefined, 'localhost:8080')
     .action(init_1.createConfig);
 init.command('model').action(init_1.createModel);
@@ -36,7 +36,7 @@ init.command('tuples').action(init_1.createTuples);
 init.command('state').action(init_1.createState);
 init
     .command('all')
-    .option('--api-schema <schema>', 'http/https', 'http')
+    .option('--api-scheme <scheme>', 'http/https', 'http')
     .option('--api-host <host>', undefined, 'localhost:8080')
     .action(init_1.createAll);
 // setup
