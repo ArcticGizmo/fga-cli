@@ -1,7 +1,13 @@
 # Fga-Cli
 A simple OpenFGA cli tool to help init and manage OpenFGA container instances for local development
 
-# Quick Start
+## Installation
+I have not had time to validate, test and upload this to npm, so you can install this directly from github via
+```
+npm install -f ArcticGizmo/fga-cli
+```
+
+## Quick Start
 (you will need docker installed for this)
 ```
 fga-cli init all && fga-cli start -d && fga-cli state set fga.state.json
@@ -11,11 +17,10 @@ and then to stop your instance
 fga-cli stop
 ```
 
-
-# Components
+## Components
 The cli provides the ability to configure `connnection`, `store`, `model`, `tuples` and `state`, as well as start and stop a docker instance (great for local development)
 
-## Start Container
+### Start Container
 You can start an OpenFGA container via the cli
 ```
 fga-cli start
@@ -23,7 +28,7 @@ fga-cli start
 
 once it is started, you can navigate to localhost:3000/playground to use the UI. To stop the container, just abort the process (ctrl+c)
 
-### Detached Container
+#### Detached Container
 If you would like to run the instance in the background (great for chaining commands)
 ```
 fga-cli start -d
@@ -33,7 +38,7 @@ And then to stop the instance
 fga-cli stop
 ```
 
-### Authenticated
+#### Authenticated
 The CLI currently only supports preshared keys, if you would like to use any other authentication method you will have to spin up the docker instance manually ([docs](https://openfga.dev/docs/getting-started/setup-openfga#configuring-the-server)). To add preshared keys
 ```
 fga-cli start --preshared-keys {key1} {key2}
