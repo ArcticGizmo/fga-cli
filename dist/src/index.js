@@ -12,7 +12,7 @@ const state_1 = require("./state");
 const store_1 = require("./store");
 const tuples_1 = require("./tuples");
 const CONFIG_FILE = './fga.config.json';
-if (process.argv0[2] !== 'init') {
+if (process.argv[2] !== 'init') {
     const config = (0, configuration_1.readJson)(CONFIG_FILE);
     fga_1.FGA.configure(config);
 }

@@ -13,7 +13,7 @@ import { addTupleOrTuples, removeTupleOrTuples } from './tuples';
 
 const CONFIG_FILE = './fga.config.json';
 
-if (process.argv0[2] !== 'init') {
+if (process.argv[2] !== 'init') {
   const config = readJson(CONFIG_FILE);
   FGA.configure(config);
 }
