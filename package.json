@@ -45,5 +45,11 @@
   "bugs": {
     "url": "https://github.com/ArcticGizmo/fga-cli/issues"
   },
-  "homepage": "https://github.com/ArcticGizmo/fga-cli#readme"
+  "homepage": "https://github.com/ArcticGizmo/fga-cli#readme",
+  "files": [
+    "bin/",
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ]
 }
