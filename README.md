@@ -1,10 +1,9 @@
-# Fga-Cli
 A simple OpenFGA cli tool to help init and manage OpenFGA container instances for local development
 
 ## Installation
 I have not had time to validate, test and upload this to npm, so you can install this directly from github via
 ```
-npm install -f ArcticGizmo/fga-cli
+npm install -g ArcticGizmo/fga-cli
 ```
 
 ## Quick Start
