@@ -23,10 +23,10 @@ const cli = new Command();
 cli
   .name('fga-cli')
   .description('Help manage OpenFGA development instances')
-  .version('0.0.1')
-  .command('repl')
-  .description('Start the OpenFGA repl')
-  .action(() => require('./fgaRepl'));
+  .version('0.0.1');
+  // .command('repl')
+  // .description('Start the OpenFGA repl')
+  // .action(() => require('./fgaRepl'));
 
 // init
 const init = cli.command('init');
