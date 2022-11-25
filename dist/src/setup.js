@@ -47,7 +47,6 @@ function startInstance(opts) {
         const ports = `-p 8080:${opts.http} -p 8081:${opts.grpc} -p 3000:${opts.playground}`;
         const detach = opts.detach ? ' -d' : '';
         let args = '';
-        console.dir(keys);
         if (keys.length) {
             args += ` --authn-method preshared --authn-preshared-keys ${keys.join(' ')}`;
         }

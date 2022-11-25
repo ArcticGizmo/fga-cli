@@ -51,7 +51,6 @@ export async function startInstance(opts: StartOptions) {
   const detach = opts.detach ? ' -d' : '';
   let args = '';
 
-  console.dir(keys);
   if (keys.length) {
     args += ` --authn-method preshared --authn-preshared-keys ${keys.join(' ')}`;
   }
