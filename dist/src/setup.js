@@ -22,7 +22,7 @@ function awaitUserTermination() {
                 const code = [...data][0];
                 // this allows everything to be flushed out before terminating
                 if (hasKilled) {
-                    console.log('  done');
+                    console.log('done');
                     resolve(undefined);
                     return;
                 }
@@ -34,7 +34,7 @@ function awaitUserTermination() {
                     return;
                 }
                 isKilling = true;
-                process.stdout.write('terminating ...');
+                console.log('terminating ...');
                 (0, cmd_1.cmd)(`docker stop ${NAME}`);
                 hasKilled = true;
             });
@@ -44,7 +44,8 @@ function awaitUserTermination() {
 function startInstance(opts) {
     return __awaiter(this, void 0, void 0, function* () {
         const ports = `-p 8080:${opts.http} -p 8081:${opts.grpc} -p 3000:${opts.playground}`;
-        const startCmd = `docker run --rm --name ${NAME} ${ports} openfga/openfga run`;
+        const detach = opts.detach ? ' -d' : '';
+        const startCmd = `docker run --rm${detach} --name ${NAME} ${ports} openfga/openfga run`;
         const runner = (0, cmd_1.liveCmd)(startCmd, { show: true });
         // exit if naturally terminated
         runner.resp

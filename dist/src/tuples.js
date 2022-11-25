@@ -13,9 +13,9 @@ exports.removeTupleOrTuples = exports.addTuples = exports.addTupleOrTuples = voi
 const configuration_1 = require("./configuration");
 const fga_1 = require("./fga");
 const helper_1 = require("./helper");
-function addTupleOrTuples(storeName, flags) {
+function addTupleOrTuples(flags) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield fga_1.FGA.setStoreByName(storeName);
+        yield fga_1.FGA.setStoreByName(flags.storeName);
         if (flags.file) {
             yield addTuplesFromFile(flags.file);
         }
@@ -57,9 +57,9 @@ function addTuples(tuples) {
     });
 }
 exports.addTuples = addTuples;
-function removeTupleOrTuples(storeName, flags) {
+function removeTupleOrTuples(flags) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield fga_1.FGA.setStoreByName(storeName);
+        yield fga_1.FGA.setStoreByName(flags.storeName);
         if (flags.file) {
             yield removeTuplesFromFile(flags.file);
         }

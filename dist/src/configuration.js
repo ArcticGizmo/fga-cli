@@ -1,16 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.readModel = exports.readJson = exports.readFile = exports.createConfig = void 0;
+exports.readModel = exports.readJson = exports.readFile = void 0;
 const fs = require("fs");
 const syntax_transformer_1 = require("@openfga/syntax-transformer");
-const DEFAULT_CONFIG_CONTENT = {
-    apiScheme: 'http',
-    apiHost: 'localhost:8080'
-};
-function createConfig() {
-    fs.writeFileSync('./fga.config.json', JSON.stringify(DEFAULT_CONFIG_CONTENT, null, 2));
-}
-exports.createConfig = createConfig;
 function readFile(path) {
     try {
         return fs.readFileSync(path).toString();

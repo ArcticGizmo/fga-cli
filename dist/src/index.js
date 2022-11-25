@@ -1,27 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const commander_1 = require("commander");
-const process_1 = require("process");
 const check_1 = require("./check");
 const configuration_1 = require("./configuration");
 const fga_1 = require("./fga");
+const init_1 = require("./init");
 const model_1 = require("./model");
 const query_1 = require("./query");
 const setup_1 = require("./setup");
 const state_1 = require("./state");
 const store_1 = require("./store");
 const tuples_1 = require("./tuples");
-if (process_1.argv[2] === 'init-config') {
-    (0, configuration_1.createConfig)();
-    process.exit();
-}
 const CONFIG_FILE = './fga.config.json';
-const config = (0, configuration_1.readJson)(CONFIG_FILE);
-if (!config) {
-    console.error(`Missing required config file '${CONFIG_FILE}'. Run 'fga-cli init-config' to generate one`);
-    process.exit(1);
+if (process.argv0[2] !== 'init') {
+    const config = (0, configuration_1.readJson)(CONFIG_FILE);
+    fga_1.FGA.configure(config);
 }
-fga_1.FGA.configure(config);
 const cli = new commander_1.Command();
 cli
     .name('fga-cli')
@@ -30,6 +24,21 @@ cli
     .command('repl')
     .description('Start the OpenFGA repl')
     .action(() => require('./fgaRepl'));
+// init
+const init = cli.command('init');
+init
+    .command('config')
+    .option('--api-schema <scheme>', 'http/https', 'http')
+    .option('--api-host <host>', undefined, 'localhost:8080')
+    .action(init_1.createConfig);
+init.command('model').action(init_1.createModel);
+init.command('tuples').action(init_1.createTuples);
+init.command('state').action(init_1.createState);
+init
+    .command('all')
+    .option('--api-schema <schema>', 'http/https', 'http')
+    .option('--api-host <host>', undefined, 'localhost:8080')
+    .action(init_1.createAll);
 // setup
 cli
     .command('start')
@@ -37,6 +46,7 @@ cli
     .option('-h, --http [port]', 'http port', '8080')
     .option('-g, --grpc [port]', 'grpc port', '8081')
     .option('-p, --playground [port]', 'playground port', '3000')
+    .option('-d, --detach', 'Run the docker instance in the background')
     .action(setup_1.startInstance);
 cli.command('stop').description('Stop local OpenFGA docker instance').action(setup_1.stopInstance);
 // ==== store ====
@@ -50,16 +60,16 @@ const model = cli.command('model');
 model
     .command('create')
     .alias('add')
-    .option('-s, --store <store>')
-    .option('-m, --model <model>', 'Path to model file')
+    .requiredOption('-s, --store <store>')
+    .requiredOption('-m, --model <model>', 'Path to model file')
     .action(model_1.setModel);
-model.command('list').option('-s, --store <store>').action(model_1.listModels);
+model.command('list').requiredOption('-s, --store <store>').action(model_1.listModels);
 // ==== Tuples ====
 const tuples = cli.command('tuples');
 tuples
     .command('add')
     .alias('create')
-    .argument('<store>', 'Name of store')
+    .requiredOption('-s, --store <store>')
     .option('-u, --user <user>')
     .option('-r, --relation <relation>')
     .option('-o, --object <object>')
@@ -68,7 +78,7 @@ tuples
 tuples
     .command('remove')
     .alias('delete')
-    .argument('<store>', 'Name of store')
+    .requiredOption('-s, --store <store>')
     .option('-u, --user <user>')
     .option('-r, --relation <relation>')
     .option('-o, --object <object>')
@@ -90,16 +100,16 @@ cli
     .argument('<user>')
     .argument('<relation>')
     .argument('<object>')
-    .option('-s, --store <store>')
+    .requiredOption('-s, --store <store>')
     .option('-c, --context <tuple>', 'Contextual tuples (can be repeated). Please use quotes "user relation object"', collectTuples)
     .action(check_1.checkTuple);
 // ==== query ====
 cli
     .command('query')
-    .option('-s, --store <store>', '[required]')
+    .requiredOption('-s, --store <store>')
+    .requiredOption('-o, --object <object>')
     .option('-u, --user <user>')
     .option('-r, --relation <relation>')
-    .option('-o, --object <object>', '[required]')
     .option('-p, --page-size <count>', 'Max entries per response', '50')
     .option('-t, --token', 'continuation token')
     .action(query_1.queryTuples);
